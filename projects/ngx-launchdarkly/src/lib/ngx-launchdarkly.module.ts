@@ -12,4 +12,4 @@ import { initialize } from 'launchdarkly-js-client-sdk';
   ],
   exports: [NgxLaunchDarklyDirective]
 })
-export class NgxLaunchdarklyModule { }
+export class NgxLaunchDarklyModule { }
