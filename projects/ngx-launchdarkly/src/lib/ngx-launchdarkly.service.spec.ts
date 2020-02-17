@@ -1,8 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { LaunchDarklyService, LAUNCH_DARKLY_API_KEY, LAUNCH_DARKLY_INITIALIZER } from './ngx-launchdarkly.service';
+import {
+  LaunchDarklyService,
+  LAUNCH_DARKLY_API_KEY,
+  LAUNCH_DARKLY_INITIALIZER
+} from './ngx-launchdarkly.service';
 
-fdescribe('LaunchDarklyService', () => {
+describe('LaunchDarklyService', () => {
   const mockedLDClient = {
     on: jasmine.createSpy('on').and.callFake((event: string, fn: Function) => {
       mockedLDClient.events[event] = fn;
