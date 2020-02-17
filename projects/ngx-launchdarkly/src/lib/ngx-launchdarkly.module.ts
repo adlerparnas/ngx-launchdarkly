@@ -1,10 +1,10 @@
 import { NgModule } from '@angular/core';
-import { NgxLaunchdarklyComponent } from './ngx-launchdarkly.component';
+import { NgxLaunchDarklyDirective } from './ngx-launchdarkly.directive';
 
 @NgModule({
-  declarations: [NgxLaunchdarklyComponent],
+  declarations: [NgxLaunchDarklyDirective],
   imports: [
   ],
-  exports: [NgxLaunchdarklyComponent]
+  exports: [NgxLaunchDarklyDirective]
 })
 export class NgxLaunchdarklyModule { }

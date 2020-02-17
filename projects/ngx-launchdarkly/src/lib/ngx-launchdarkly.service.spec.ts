@@ -1,12 +1,12 @@
 import { TestBed } from '@angular/core/testing';
 
-import { NgxLaunchdarklyService } from './ngx-launchdarkly.service';
+import { LaunchDarklyService } from './ngx-launchdarkly.service';
 
-describe('NgxLaunchdarklyService', () => {
+describe('LaunchDarklyService', () => {
   beforeEach(() => TestBed.configureTestingModule({}));
 
   it('should be created', () => {
-    const service: NgxLaunchdarklyService = TestBed.get(NgxLaunchdarklyService);
+    const service: LaunchDarklyService = TestBed.get(LaunchDarklyService);
     expect(service).toBeTruthy();
   });
 });
