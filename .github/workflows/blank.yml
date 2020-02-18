@@ -1,0 +1,24 @@
+name: CI
+
+on: 
+  push:
+    branches: 
+      - master
+      - release/*
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Use Node.js ${{ matrix.node_version }}
+      uses: actions/setup-node@v1
+    - name: npm intall, test and build
+      run: |
+        npm install
+        npm test
+        npm build
+    - name: Publish NPM package
+      working-directory: 'dist/ngx-launchdarkly'
+      run: ls .
