@@ -188,9 +188,9 @@ NgxLaunchDarklyDirective.propDecorators = {
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 const ɵ0 = initialize;
-class NgxLaunchdarklyModule {
+class NgxLaunchDarklyModule {
 }
-NgxLaunchdarklyModule.decorators = [
+NgxLaunchDarklyModule.decorators = [
     { type: NgModule, args: [{
                 declarations: [NgxLaunchDarklyDirective],
                 imports: [],
@@ -213,6 +213,6 @@ NgxLaunchdarklyModule.decorators = [
  * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
  */
 
-export { LAUNCH_DARKLY_INITIALIZER, LAUNCH_DARKLY_API_KEY, LAUNCH_DARKLY_OPTIONS, LaunchDarklyService, NgxLaunchDarklyContext, NgxLaunchDarklyDirective, NgxLaunchdarklyModule };
+export { LAUNCH_DARKLY_INITIALIZER, LAUNCH_DARKLY_API_KEY, LAUNCH_DARKLY_OPTIONS, LaunchDarklyService, NgxLaunchDarklyContext, NgxLaunchDarklyDirective, NgxLaunchDarklyModule };
 
 //# sourceMappingURL=ngx-launchdarkly.js.map

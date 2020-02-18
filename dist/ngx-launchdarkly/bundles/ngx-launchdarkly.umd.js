@@ -206,10 +206,10 @@
      * @suppress {checkTypes,constantProperty,extraRequire,missingOverride,missingReturn,unusedPrivateMembers,uselessCode} checked by tsc
      */
     var ɵ0 = launchdarklyJsClientSdk.initialize;
-    var NgxLaunchdarklyModule = /** @class */ (function () {
-        function NgxLaunchdarklyModule() {
+    var NgxLaunchDarklyModule = /** @class */ (function () {
+        function NgxLaunchDarklyModule() {
         }
-        NgxLaunchdarklyModule.decorators = [
+        NgxLaunchDarklyModule.decorators = [
             { type: i0.NgModule, args: [{
                         declarations: [NgxLaunchDarklyDirective],
                         imports: [],
@@ -219,7 +219,7 @@
                         exports: [NgxLaunchDarklyDirective]
                     },] }
         ];
-        return NgxLaunchdarklyModule;
+        return NgxLaunchDarklyModule;
     }());
 
     /**
@@ -240,7 +240,7 @@
     exports.LaunchDarklyService = LaunchDarklyService;
     exports.NgxLaunchDarklyContext = NgxLaunchDarklyContext;
     exports.NgxLaunchDarklyDirective = NgxLaunchDarklyDirective;
-    exports.NgxLaunchdarklyModule = NgxLaunchdarklyModule;
+    exports.NgxLaunchDarklyModule = NgxLaunchDarklyModule;
 
     Object.defineProperty(exports, '__esModule', { value: true });
 
