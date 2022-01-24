@@ -5,6 +5,7 @@ import {
   LAUNCH_DARKLY_API_KEY,
   LAUNCH_DARKLY_INITIALIZER
 } from './ngx-launchdarkly.service';
+import {skip} from 'rxjs/operators';
 
 describe('LaunchDarklyService', () => {
   const mockedLDClient = {
@@ -12,6 +13,8 @@ describe('LaunchDarklyService', () => {
       mockedLDClient.events[event] = fn;
     }),
     identify: jasmine.createSpy('identify'),
+
+    allFlags: () => ({foo: true}),
     getUser: () => 'anon',
 
     // those properties are for the test only
@@ -47,13 +50,17 @@ describe('LaunchDarklyService', () => {
 
   it('should push updates to the subject when the ldClient is initialized', (done) => {
     const service: LaunchDarklyService = TestBed.get(LaunchDarklyService);
-    const subscription = service.flagChange.subscribe((value) => {
-      expect(value).toEqual('foo');
-      subscription.unsubscribe();
-      done();
-    }, done);
 
-    mockedLDClient.trigger('initialized', 'foo');
+    const subscription = service.flagChange
+      // Skip the initial missing values.
+      .pipe(skip(1))
+      .subscribe((value) => {
+        expect(value).toEqual({foo: true});
+        subscription.unsubscribe();
+        done();
+      }, done);
+
+    mockedLDClient.trigger('initialized', {foo: true});
   });
 
   it('should updated the user on the LDClient', () => {
