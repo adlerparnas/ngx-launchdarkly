@@ -1,4 +1,4 @@
-# ngx-lauchdarkly
+# ngx-launchdarkly
 
 Angular library for [LaunchDarkly](https://launchdarkly.com/) integration.
 
@@ -7,34 +7,15 @@ Angular library for [LaunchDarkly](https://launchdarkly.com/) integration.
 First you need to install the npm module:
 
 ```sh
-npm install ngx-launchdarkly --save
+npm install ngx-launchdarkly
 ```
 
 
 ## Usage
 
-#### 1. Import the `NgxLaunchDarklyModule`:
+#### 1. Configure the `NgxLaunchDarklyModule` to user the correct Client ID Key:
 
-Finally, you can use ngx-launchdarkly in your Angular project. You have to import `NgxLaunchDarklyModule` in the root NgModule of your application.
-
-```ts
-import {BrowserModule} from '@angular/platform-browser';
-import {NgModule} from '@angular/core';
-import {NgxLaunchDarklyModule} from 'ngx-launchdarkly';
-
-@NgModule({
-    imports: [
-        BrowserModule,
-        NgxLaunchDarklyModule
-    ],
-    bootstrap: [AppComponent]
-})
-export class AppModule { }
-```
-
-#### 2. Configure the `NgxLaunchDarklyModule` to user the correct Client ID Key:
-
-In your module, you have to provide the ClientID Api Key
+In your module, you have to provide the ClientID API Key. This is the _Client_ not the _Mobile_ key.
 
 ```ts
 import {BrowserModule} from '@angular/platform-browser';
@@ -44,22 +25,52 @@ import {NgxLaunchDarklyModule} from 'ngx-launchdarkly';
 @NgModule({
     imports: [
         BrowserModule,
-        NgxLaunchDarklyModule.forRoot()
+        NgxLaunchDarklyModule,
     ],
     providers: [
       { provide: LAUNCH_DARKLY_API_KEY, useValue: 'MY_CLIENT_ID_KEY' }
-    ]
+    ],
     bootstrap: [AppComponent]
 })
 export class AppModule { }
 ```
 
+#### 1. Import the `NgxLaunchDarklyModule`:
+
+```ts
+import {NgxLaunchDarklyModule} from 'ngx-launchdarkly';
+
+@NgModule({
+    imports: [
+        NgxLaunchDarklyModule,
+    ],
+})
+export class MyComponentModule { }
+```
 
 #### 3. Use the directive in your templates to disable components based in your flags
 
 ```html
 <div>
   <app-my-custom-component *ngxLaunchDarkly="'myCustomFlag'"></app-my-custom-component>
+</div>
+```
+
+You can also negate a flag:
+
+```html
+<div>
+  <app-my-custom-component *ngxLaunchDarkly="'!myCustomFlag'"></app-my-custom-component>
+  <app-my-custom-component *ngxLaunchDarkly="'myCustomFlag';value:false"></app-my-custom-component>
+</div>
+```
+
+You can also tie it to a non-boolean value:
+
+```html
+<div>
+  <app-my-custom-component *ngxLaunchDarkly="'myStringFlag';value:'valueOne'"></app-my-custom-component>
+  <app-my-custom-component *ngxLaunchDarkly="'myStringFlag';value:'valueTwo'"></app-my-custom-component>
 </div>
 ```
 
