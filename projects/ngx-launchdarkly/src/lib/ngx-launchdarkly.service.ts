@@ -1,6 +1,7 @@
 import { Injectable, Inject, Optional } from '@angular/core';
-import { Subject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 import { LDClient, LDFlagSet, LDOptions } from 'launchdarkly-js-client-sdk';
+import { LDFlagChangeset } from 'launchdarkly-js-sdk-common';
 
 export const LAUNCH_DARKLY_INITIALIZER = 'LAUNCH_DARKLY_INITIALIZER';
 export const LAUNCH_DARKLY_API_KEY = 'LAUNCH_DARKLY_API_KEY';
@@ -13,10 +14,10 @@ export class LaunchDarklyService {
   private _ldClient: LDClient;
   private _flags: LDFlagSet;
 
-  readonly flagChange: Subject<any> = new Subject<any>();
+  readonly flagChange = new BehaviorSubject<LDFlagSet>({});
 
-  private _setFlags(flags: any) {
-    this._flags = flags;
+  private _setFlags(flags: LDFlagChangeset) {
+    this._flags = {...this._flags, ...flags};
     this.flagChange.next(this._flags);
   }
 
@@ -31,9 +32,17 @@ export class LaunchDarklyService {
       anonymous: true
     }, ldOptions);
 
-    this._ldClient.on('initialized', (value) => this._setFlags(value));
+    this._ldClient.on('initialized', () => this._setFlags(this._ldClient.allFlags()));
 
-    this._ldClient.on('change', (value) => this._setFlags(value));
+    this._ldClient.on('change', (value: LDFlagChangeset) => {
+      // We are only interested in having the values of the flags in their
+      // current state. Iterate over the values we receive from the update,
+      // and set it to the the current value. This gives us an update that
+      // can be passed into _setFlags.
+      this._setFlags(Object.keys(value || {})
+        .map((key) => ({key, value: value[key].current}))
+        .reduce((o, v) => ({...o, [v.key]: v.value}), {}));
+    });
 
     this._ldClient.on('error', (error) => this.flagChange.error(error));
   }

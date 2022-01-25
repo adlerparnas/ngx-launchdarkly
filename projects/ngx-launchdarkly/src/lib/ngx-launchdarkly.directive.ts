@@ -6,8 +6,8 @@ import {
   Input,
   OnDestroy
 } from '@angular/core';
-import { Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { BehaviorSubject, Subscription } from 'rxjs';
+import { map, switchMap } from 'rxjs/operators';
 import { LaunchDarklyService } from './ngx-launchdarkly.service';
 
 export class NgxLaunchDarklyContext {
@@ -26,6 +26,8 @@ export class NgxLaunchDarklyDirective implements OnDestroy {
   private _currentFlag: string | undefined;
   private _flagSubscription: Subscription = Subscription.EMPTY;
 
+  private _value$ = new BehaviorSubject(true);
+
   constructor(
     private _viewContainer: ViewContainerRef,
     private _ldService: LaunchDarklyService,
@@ -37,11 +39,20 @@ export class NgxLaunchDarklyDirective implements OnDestroy {
   @Input()
   set ngxLaunchDarkly(flagName: string) {
     if (this._currentFlag == null && flagName) {
+      if (flagName[0] === '!') {
+        this._value$.next(false);
+        flagName = flagName.slice(1);
+      }
       this._currentFlag = flagName;
       this._startSubscription();
     } else {
       throw new Error('flagName parameter should be bound once');
     }
+  }
+
+  @Input('ngxLaunchDarklyValue')
+  set ngxLaunchDarklyValue(value) {
+    this._value$.next(value);
   }
 
   private _updateView() {
@@ -61,7 +72,17 @@ export class NgxLaunchDarklyDirective implements OnDestroy {
 
   private _startSubscription() {
     this._flagSubscription = this._ldService.flagChange
-      .pipe(map(flags => !!flags[this._currentFlag]))
+      .pipe(
+        map(flags => {
+          if (flags[this._currentFlag] === undefined || flags[this._currentFlag] === null) {
+            return false;
+          }
+          return flags[this._currentFlag];
+        }),
+        switchMap((flagState) => this._value$.pipe(
+          map((value) => value === flagState))
+        ),
+      )
       .subscribe((flagState: boolean) => {
         this._context.$implicit = this._context.ngxLanchDarkly = flagState;
         this._updateView();
